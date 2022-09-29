@@ -1,0 +1,3 @@
+peewee
+flask
+appdirs
