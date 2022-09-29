@@ -72,7 +72,7 @@ def upload():
     filename = secure_filename(request.form['filename'])
     database = request.form['database']
     file_obj = request.files['file']
-    new_name = uuid.uuid4().hex + "." + filename
+    new_name = uuid.uuid4().hex[:16] + "." + filename
     filepath = data_dir / "uploads" / new_name
     file_obj.save(filepath)
     our_hash = sha256(filepath)
@@ -89,7 +89,7 @@ def upload():
 
     File(
         filepath=str(filepath),
-        name=new_name,
+        database=database,
         sha256=our_hash,
     ).save()
 
