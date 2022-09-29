@@ -1,26 +1,22 @@
+import hashlib
+import json
+import uuid
+from pathlib import Path
+
+from flask import Response, abort, request, send_file, url_for
+from peewee import DoesNotExist
+from werkzeug.utils import secure_filename
+
+from ..version import version
 from . import dardanelles_app
 from .db import File
 from .filesystem import data_dir
-from flask import (
-    abort,
-    request,
-    Response,
-    send_file,
-    url_for,
-)
-from peewee import DoesNotExist
-from werkzeug.utils import secure_filename
-import json
-import uuid
-from ..version import version
-import hashlib
-from pathlib import Path
 
 
 def sha256(filepath, blocksize=65536):
     """Generate SHA 256 hash for file at `filepath`"""
     hasher = hashlib.sha256()
-    fo = open(filepath, 'rb')
+    fo = open(filepath, "rb")
     buf = fo.read(blocksize)
     while len(buf) > 0:
         hasher.update(buf)
@@ -29,27 +25,29 @@ def sha256(filepath, blocksize=65536):
 
 
 def json_response(data):
-    return Response(json.dumps(data), mimetype='application/json')
+    return Response(json.dumps(data), mimetype="application/json")
 
 
-@dardanelles_app.route('/')
+@dardanelles_app.route("/")
 def index():
     return """dardanelles web service, version {}.""".format(version)
 
 
-@dardanelles_app.route('/ping')
+@dardanelles_app.route("/ping")
 def ping():
     return "pong"
 
 
-@dardanelles_app.route('/catalog')
+@dardanelles_app.route("/catalog")
 def catalog():
-    return json_response([(Path(obj.filepath).name, obj.database, obj.sha256) for obj in File.select()])
+    return json_response(
+        [(Path(obj.filepath).name, obj.database, obj.sha256) for obj in File.select()]
+    )
 
 
-@dardanelles_app.route('/download', methods=['POST'])
+@dardanelles_app.route("/download", methods=["POST"])
 def download():
-    filehash = request.form['hash']
+    filehash = request.form["hash"]
 
     try:
         obj = File.get(File.sha256 == filehash)
@@ -58,21 +56,25 @@ def download():
 
     return send_file(
         obj.filepath,
-        mimetype='application/octet-stream',
+        mimetype="application/octet-stream",
         as_attachment=True,
-        attachment_filename=Path(obj.filepath).name
+        attachment_filename=Path(obj.filepath).name,
     )
 
 
-@dardanelles_app.route('/upload', methods=['POST'])
+@dardanelles_app.route("/upload", methods=["POST"])
 def upload():
-    if not request.form['sha256'] or not request.form['database'] or not request.form['filename']:
+    if (
+        not request.form["sha256"]
+        or not request.form["database"]
+        or not request.form["filename"]
+    ):
         abort(400, "Missing required field(s)")
 
-    their_hash = request.form['sha256']
-    filename = secure_filename(request.form['filename'])
-    database = request.form['database']
-    file_obj = request.files['file']
+    their_hash = request.form["sha256"]
+    filename = secure_filename(request.form["filename"])
+    database = request.form["database"]
+    file_obj = request.files["file"]
     new_name = uuid.uuid4().hex[:16] + "." + filename
     filepath = data_dir / "uploads" / new_name
     file_obj.save(filepath)
@@ -94,9 +96,4 @@ def upload():
         sha256=our_hash,
     ).save()
 
-    return json_response(
-        {
-            'filename': new_name,
-            'sha256': our_hash
-        }
-    )
+    return json_response({"filename": new_name, "sha256": our_hash})

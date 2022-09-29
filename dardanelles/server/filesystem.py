@@ -1,6 +1,8 @@
-import appdirs
 import os
 from pathlib import Path
+
+import appdirs
+
 
 def create_dir(dirpath):
     if not os.path.isdir(dirpath):

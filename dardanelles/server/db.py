@@ -1,14 +1,9 @@
-from .filesystem import data_dir
-from peewee import (
-    Model,
-    SqliteDatabase,
-    TextField,
-    DateTimeField,
-    IntegerField,
-)
-import os
 import datetime
+import os
 
+from peewee import DateTimeField, IntegerField, Model, SqliteDatabase, TextField
+
+from .filesystem import data_dir
 
 db_filepath = os.path.join(data_dir, "dardanelles.db")
 print("Using database at", db_filepath)

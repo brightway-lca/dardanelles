@@ -1,16 +1,25 @@
-from bw2data import Database, databases
-from bw_processing.constants import DEFAULT_LICENSES
-from bw_processing.filesystem import safe_filename, clean_datapackage_name
-from bw_processing.io_helpers import generic_zipfile_filesystem, file_writer
-from bw_processing.utils import check_suffix, check_name
-from pathlib import Path
-from typing import Optional
 import datetime
 import uuid
+from pathlib import Path
+from typing import Optional
+
 import numpy as np
+from bw2data import Database, databases
+from bw_processing.constants import DEFAULT_LICENSES
+from bw_processing.filesystem import clean_datapackage_name, safe_filename
+from bw_processing.io_helpers import file_writer, generic_zipfile_filesystem
+from bw_processing.utils import check_name, check_suffix
 
 
-def to_dardanelles_datapackage(database: str, author: str, add_uncertainty: bool=True, directory: Optional[Path] = None, version: Optional[str] = None, id_: Optional[str] = None, licenses: Optional[list] = None):
+def to_dardanelles_datapackage(
+    database: str,
+    author: str,
+    add_uncertainty: bool = True,
+    directory: Optional[Path] = None,
+    version: Optional[str] = None,
+    id_: Optional[str] = None,
+    licenses: Optional[list] = None,
+):
     """Export a Brightway database to a zipped datapackage in a temporary directory.
 
     * ``database``: str. Name of database to export.
@@ -29,7 +38,15 @@ def to_dardanelles_datapackage(database: str, author: str, add_uncertainty: bool
     dirpath = Path(directory or Path.cwd())
 
     def add_uncertainty_columns(node, edge, row):
-        fields = ("uncertainty_type", "loc", "scale", "shape", "minimum", "maximum", "negative")
+        fields = (
+            "uncertainty_type",
+            "loc",
+            "scale",
+            "shape",
+            "minimum",
+            "maximum",
+            "negative",
+        )
         for field in fields:
             row[field] = edge.get(field)
 
@@ -39,14 +56,14 @@ def to_dardanelles_datapackage(database: str, author: str, add_uncertainty: bool
     check_name(name)
 
     metadata = {
-            "profile": "tabular-data-package",
-            "name": name,
-            "database": database,
-            "id": id_ or uuid.uuid4().hex,
-            "licenses": licenses or DEFAULT_LICENSES,
-            "resources": [],
-            "depends": db.metadata['depends'],
-            "created": datetime.datetime.utcnow().isoformat("T") + "Z",
+        "profile": "tabular-data-package",
+        "name": name,
+        "database": database,
+        "id": id_ or uuid.uuid4().hex,
+        "licenses": licenses or DEFAULT_LICENSES,
+        "resources": [],
+        "depends": db.metadata["depends"],
+        "created": datetime.datetime.utcnow().isoformat("T") + "Z",
     }
 
     # Numpy dtypes are "interesting", can't just lookup in a dict
@@ -90,10 +107,10 @@ def to_dardanelles_datapackage(database: str, author: str, add_uncertainty: bool
                     "type": get_dtype(dtype),
                 }
                 for label, dtype in zip(df.columns, df.dtypes)
-            ]
-        }
+            ],
+        },
     }
-    metadata['resources'].append(resource)
+    metadata["resources"].append(resource)
     file_writer(data=df, fs=zipfile, resource="nodes.csv", mimetype="text/csv")
 
     df = db.edges_to_dataframe(categorical=False, formatters=formatters)
@@ -109,9 +126,9 @@ def to_dardanelles_datapackage(database: str, author: str, add_uncertainty: bool
                 }
                 for label, dtype in zip(df.columns, df.dtypes)
             ]
-        }
+        },
     }
-    metadata['resources'].append(resource)
+    metadata["resources"].append(resource)
     file_writer(data=df, fs=zipfile, resource="edges.csv", mimetype="text/csv")
 
     file_writer(
