@@ -14,6 +14,7 @@ import json
 import uuid
 from ..version import version
 import hashlib
+from pathlib import Path
 
 
 def sha256(filepath, blocksize=65536):
