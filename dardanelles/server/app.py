@@ -31,17 +31,17 @@ def json_response(data):
     return Response(json.dumps(data), mimetype='application/json')
 
 
-@pr_app.route('/')
+@dardanelles_app.route('/')
 def ping():
     return """dardanelles web service, version {}.""".format(version)
 
 
-@pr_app.route('/catalog')
+@dardanelles_app.route('/catalog')
 def catalog():
     return json_response([(Path(obj.filepath).name, obj.database, obj.sha256) for obj in File.select()])
 
 
-@pr_app.route('/download', methods=['POST'])
+@dardanelles_app.route('/download', methods=['POST'])
 def download():
     filehash = request.form['hash']
 
@@ -58,7 +58,7 @@ def download():
     )
 
 
-@pr_app.route('/upload', methods=['POST'])
+@dardanelles_app.route('/upload', methods=['POST'])
 def upload():
     their_hash = request.form['sha256']
     filename = secure_filename(request.form['name'])
