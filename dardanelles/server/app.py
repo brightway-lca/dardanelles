@@ -65,8 +65,12 @@ def download():
 
 @dardanelles_app.route('/upload', methods=['POST'])
 def upload():
+    if not request.form['sha256'] or not request.form['database'] or not request.form['filename']:
+        abort(400, "Missing required field(s)")
+
     their_hash = request.form['sha256']
-    filename = secure_filename(request.form['name'])
+    filename = secure_filename(request.form['filename'])
+    database = request.form['database']
     file_obj = request.files['file']
     new_name = uuid.uuid4().hex + "." + filename
     filepath = data_dir / "uploads" / new_name
