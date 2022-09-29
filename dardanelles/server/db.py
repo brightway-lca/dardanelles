@@ -9,7 +9,7 @@ import os
 
 db_filepath = os.path.join(data_dir, "dardanelles.db")
 print("Using database at", db_filepath)
-database = SqliteDatabase(db_filepath)
+sql_database = SqliteDatabase(db_filepath)
 
 
 class File(Model):
@@ -17,5 +17,8 @@ class File(Model):
     sha256 = TextField(unique=True)
     database = TextField()
 
+    class Meta:
+        database = sql_database
 
-database.create_tables([File], safe=True)
+
+sql_database.create_tables([File], safe=True)
