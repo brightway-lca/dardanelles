@@ -32,8 +32,13 @@ def json_response(data):
 
 
 @dardanelles_app.route('/')
-def ping():
+def index():
     return """dardanelles web service, version {}.""".format(version)
+
+
+@dardanelles_app.route('/ping')
+def ping():
+    return "pong"
 
 
 @dardanelles_app.route('/catalog')
