@@ -52,8 +52,18 @@
             <td>{{ row.database }}</td>
             <td>{{ row.user.name }}</td>
             <td>{{ row.count }}</td>
-            <td>{{ row.sha256|truncate(20, True) }}</td>
+            <td>
+              {{ row.sha256|truncate(10, True) }}
+            </td>
             <td>{{ row.description }}</td>
+            <td>
+              <button
+                class="button-primary"
+                onclick="hash_to_clipboard('{{ row.sha256 }}')"
+              >
+                Copy hash to clipboard
+              </button>
+            </td>
           </tr>{% endfor %}
         </tbody>
       </table>
@@ -70,4 +80,8 @@ function choose_pic() {
   el.src = selected_pic;
 }
 window.onload = choose_pic();
+
+function hash_to_clipboard(hash) {
+  navigator.clipboard.writeText(hash)
+};
 </script>
