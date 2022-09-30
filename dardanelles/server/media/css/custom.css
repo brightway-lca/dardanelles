@@ -4,3 +4,7 @@ img .logopic {
   margin-right: auto;
   width: 66%;
 }
+
+tr.dark {
+  background-color: #e8f7f6;
+}
