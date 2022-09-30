@@ -21,8 +21,8 @@ def check_alive(wrapped, instance, args, kwargs):
     return wrapped(*args, **kwargs)
 
 
-def register(email: str, url: Optional[str] = "https://lci.brightway.dev", salt: Optional[bytes] = DEFAULT_SALT):
-    data = {"email_hash": bcrypt.hashpw(bytes(email, 'utf-8'), salt)}
+def register(email: str, username: str, url: Optional[str] = "https://lci.brightway.dev", salt: Optional[bytes] = DEFAULT_SALT):
+    data = {"email_hash": bcrypt.hashpw(bytes(email, 'utf-8'), salt), "username": username}
     resp = requests.post(url + "/register", data=data)
     if resp.status_code == 200:
         return resp.json()['api_key']

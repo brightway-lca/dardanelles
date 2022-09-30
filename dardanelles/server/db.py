@@ -26,6 +26,7 @@ class JSONField(TextField):
 
 
 class User(Model):
+    name = TextField(unique=True)
     api_key = TextField(unique=True)
     email_hash = TextField(unique=True)
 

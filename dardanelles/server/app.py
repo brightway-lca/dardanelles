@@ -41,16 +41,20 @@ def ping():
 
 @dardanelles_app.route("/register", methods=["POST"])
 def register():
-    if not request.form["email_hash"]:
+    if not request.form["email_hash"] or not request.form['username']:
         abort(400, "Missing required field")
 
     email_hash = request.form["email_hash"]
+    name = request.form['username']
+
+    if User.select().where((User.email_hash != email_hash) & (User.name == name)).exists():
+        abort(406, "Username already registered")
 
     try:
         user = User.get(User.email_hash == email_hash)
     except User.DoesNotExist:
         api_key = uuid.uuid4().hex
-        user = User.create(email_hash=email_hash, api_key=api_key)
+        user = User.create(email_hash=email_hash, api_key=api_key, name=name)
 
     return json_response({"api_key": api_key})
 
