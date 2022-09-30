@@ -37,7 +37,13 @@ The following API endpoints are supported:
 
 #### `/`
 
-Ping the server. Returns something like ``dardanelles life cycle inventory web data exchange, version (0, 1)``.
+Get the current catalog as human-readable HTML.
+
+HTTP method: **GET**
+
+#### `/ping`
+
+Check that the server is alive. Returns `pong`.
 
 HTTP method: **GET**
 
@@ -68,7 +74,8 @@ HTTP method: **POST**
 
 Post the following required form data:
 
-* ``name``: File name
+* ``filename``: File name
+* ``database``: Database name
 * ``sha256``: SHA 256 hash of file
 
 The file should be in the field ``file``.
@@ -80,8 +87,7 @@ The file should be in the field ``file``.
 ```javascript
 
     {
-        'filename': 'some file name',
-        'database name': 'reported name of the database',
+        'filename': 'filename on server',
         'sha256': 'hex-encoded sha256 hash of file contents'
     }
 ```

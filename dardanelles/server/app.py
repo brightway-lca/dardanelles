@@ -11,6 +11,7 @@ from ..version import version
 from . import dardanelles_app
 from .db import File
 from .filesystem import data_dir
+from .datapackage import Datapackage
 
 
 def sha256(filepath, blocksize=65536):
@@ -90,9 +91,17 @@ def upload():
         filepath.unlink()
         abort(409, "This file hash is already uploaded")
 
+    try:
+        dp = Datapackage(filepath)
+        assert len(dp.nodes)
+    except:
+        abort(406, "Can't load datapackage")
+
     File(
         filepath=str(filepath),
         database=database,
+        depends=dp.depends,
+        description=dp.description,
         sha256=our_hash,
     ).save()
 

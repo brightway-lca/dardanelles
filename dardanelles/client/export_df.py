@@ -14,6 +14,7 @@ from bw_processing.utils import check_name, check_suffix
 def to_dardanelles_datapackage(
     database: str,
     author: str,
+    description: str,
     add_uncertainty: bool = True,
     directory: Optional[Path] = None,
     version: Optional[str] = None,
@@ -59,6 +60,7 @@ def to_dardanelles_datapackage(
         "profile": "tabular-data-package",
         "name": name,
         "database": database,
+        "description": description,
         "id": id_ or uuid.uuid4().hex,
         "licenses": licenses or DEFAULT_LICENSES,
         "resources": [],
