@@ -4,3 +4,4 @@ bw_processing
 numpy
 wrapt
 bcrypt
+tqdm
