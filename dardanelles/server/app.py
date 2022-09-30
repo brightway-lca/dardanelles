@@ -125,6 +125,7 @@ def upload():
         abort(406, "Can't load datapackage")
 
     File(
+        user=user,
         filepath=str(filepath),
         database=database,
         depends=dp.depends,

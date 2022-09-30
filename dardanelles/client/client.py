@@ -31,8 +31,9 @@ def register(email: str, username: str, url: Optional[str] = "https://lci.bright
 
 
 class DardanellesClient:
-    def __init__(self, url: str = "https://lci.brightway.dev"):
+    def __init__(self, api_key: str, url: str = "https://lci.brightway.dev"):
         self.url = url
+        self.api_key = api_key
         while self.url.endswith("/"):
             self.url = self.url[:-1]
 
@@ -72,6 +73,7 @@ class DardanellesClient:
         file_hash = sha256(filepath)
         url = self.url + "/upload"
         data = {
+            "api_key": self.api_key,
             "filename": filepath.name,
             "database": database,
             "sha256": sha256(filepath),
