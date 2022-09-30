@@ -78,7 +78,7 @@ def download(hash):
         obj.filepath,
         mimetype="application/octet-stream",
         as_attachment=True,
-        attachment_filename=Path(obj.filepath).name,
+        download_name=Path(obj.filepath).name,
     )
 
 
