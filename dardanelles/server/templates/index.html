@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <title>Dardanelles LCI Exchange</title>
+  <meta name="description" content="Web service for exchange of simple LCI models using Brightway">
+  <meta name="author" content="Chris Mutel">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/media/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/media/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/media/img/favicon-16x16.png">
+  <link rel="manifest" href="/media/site.webmanifest">
+
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div style="margin-top: 10%">
+        <img id="logopic" src="/media/img/Dardanelles7.png" align="center">
+        <p>Dardanelles is a web service for the exchange of simple LCI data. It was built for use in the <a href="https://brightway.dev/">Brightway Life Cycle Assessment framework</a>, but the underlying format uses <a href="">Datapackages</a> with CSV and JSON files, and should be usable in other contexts.</p>
+        <p>This is <a href="https://github.com/brightway-lca/dardanelles">open source software</a>. You can use it to run your server; all data uploaded to this server is publicly accessible.</p>
+        <p>To upload you need to register; see <a href="https://github.com/brightway-lca/dardanelles/blob/77cb1485833c8dc0af6274155cccd2ff3383e892/dardanelles/client/client.py#L24">the registration function code</a>.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
+<script type="text/javascript">
+function choose_pic() {
+  var pics = ["/media/img/Dardanelles1.png", "/media/img/Dardanelles2.png", "/media/img/Dardanelles3.png", "/media/img/Dardanelles4.png", "/media/img/Dardanelles5.png", "/media/img/Dardanelles6.png", "/media/img/Dardanelles7.png", "/media/img/Dardanelles8.png", "/media/img/Dardanelles9.png"];
+  var selected_pic = pics[Math.floor(Math.random()*pics.length)];
+  var el = document.getElementById("logopic");
+  el.src = selected_pic;
+}
+window.onload = choose_pic();
+</script>
