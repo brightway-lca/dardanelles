@@ -10,7 +10,7 @@ from werkzeug.utils import secure_filename
 
 from ..version import version
 from . import dardanelles_app
-from .datapackage import Datapackage
+from ..datapackage import Datapackage
 from .db import File, User
 from .filesystem import data_dir
 
@@ -67,12 +67,10 @@ def catalog():
     )
 
 
-@dardanelles_app.route("/download", methods=["POST"])
-def download():
-    filehash = request.form["hash"]
-
+@dardanelles_app.route("/download/<hash>", methods=["GET"])
+def download(hash):
     try:
-        obj = File.get(File.sha256 == filehash)
+        obj = File.get(File.sha256 == hash)
     except DoesNotExist:
         abort(404, "Can't find file")
 
