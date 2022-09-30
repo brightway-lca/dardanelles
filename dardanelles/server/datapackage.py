@@ -30,6 +30,7 @@ class Datapackage:
         self.depends = self.metadata['depends']
         self.database = self.metadata['database']
         self.name = self.metadata['name']
+        self.description = self.metadata['description']
 
         index = [i for i, dct in enumerate(self.resources) if dct['path'] == 'nodes.csv']
         if not len(index) == 1:
