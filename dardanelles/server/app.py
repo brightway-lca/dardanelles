@@ -44,6 +44,8 @@ def register():
     if not request.form["email_hash"]:
         abort(400, "Missing required field")
 
+    email_hash = request.form["email_hash"]
+
     try:
         user = User.get(User.email_hash == email_hash)
     except User.DoesNotExist:
