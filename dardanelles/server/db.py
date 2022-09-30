@@ -25,7 +25,13 @@ class JSONField(TextField):
         return json.loads(value)
 
 
+class User(Model):
+    api_key = TextField(unique=True)
+    email_hash = TextField(unique=True)
+
+
 class File(Model):
+    user = ForeignKeyField(User)
     filepath = TextField()
     sha256 = TextField(unique=True)
     database = TextField()
@@ -39,4 +45,4 @@ class File(Model):
         database = sql_database
 
 
-sql_database.create_tables([File], safe=True)
+sql_database.create_tables([File, User], safe=True)

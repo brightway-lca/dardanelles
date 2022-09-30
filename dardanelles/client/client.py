@@ -4,10 +4,14 @@ from typing import Optional
 
 import requests
 import wrapt
+import bcrypt
 
 from .errors import AlreadyExists, RemoteError
 from .export_df import to_dardanelles_datapackage
 from .utils import sha256
+
+
+DEFAULT_SALT = b'$2b$12$1FBcxtAiJUHWbTxY/47O1u'
 
 
 @wrapt.decorator
@@ -15,6 +19,15 @@ def check_alive(wrapped, instance, args, kwargs):
     if not instance.alive:
         raise RemoteError("Can't reach {}".format(instance.url))
     return wrapped(*args, **kwargs)
+
+
+def register(email: str, url: Optional[str] = "https://lci.brightway.dev", salt: Optional[bytes] = DEFAULT_SALT):
+    data = {"email_hash": bcrypt.hashpw(bytes(email, 'utf-8'), salt)}
+    resp = requests.post(url + "/register", data=data)
+    if resp.status_code == 200:
+        return resp.json()['api_key']
+    else:
+        raise RemoteError
 
 
 class DardanellesClient:

@@ -10,7 +10,7 @@ from werkzeug.utils import secure_filename
 from ..version import version
 from . import dardanelles_app
 from .datapackage import Datapackage
-from .db import File
+from .db import File, User
 from .filesystem import data_dir
 
 
@@ -37,6 +37,20 @@ def index():
 @dardanelles_app.route("/ping")
 def ping():
     return "pong"
+
+
+@dardanelles_app.route("/register", methods=["POST"])
+def register():
+    if not request.form["email_hash"]:
+        abort(400, "Missing required field")
+
+    try:
+        user = User.get(User.email_hash == email_hash)
+    except User.DoesNotExist:
+        api_key = uuid.uuid4().hex
+        user = User.create(email_hash=email_hash, api_key=api_key)
+
+    return json_response({"api_key": api_key})
 
 
 @dardanelles_app.route("/catalog")
@@ -69,8 +83,14 @@ def upload():
         not request.form["sha256"]
         or not request.form["database"]
         or not request.form["filename"]
+        or not request.form["api_key"]
     ):
         abort(400, "Missing required field(s)")
+
+    try:
+        user = User.get(User.api_key == request.form["api_key"])
+    except User.DoesNotExist:
+        abort(406, "api_key not correct")
 
     their_hash = request.form["sha256"]
     filename = secure_filename(request.form["filename"])

@@ -2,3 +2,4 @@ bw2data
 bw_processing
 numpy
 wrapt
+bcrypt
