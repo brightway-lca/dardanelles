@@ -44,11 +44,15 @@
         </thead>
         <tbody>
           {% for row in table %}
-          <tr>
+            {% if loop.index0 % 2  == 0 %}
+            <tr>
+            {% else %}
+            <tr class="dark">
+            {% endif %}
             <td>{{ row.database }}</td>
             <td>{{ row.user.name }}</td>
             <td>{{ row.count }}</td>
-            <td>{{ row.sha256 }}</td>
+            <td>{{ row.sha256|truncate(20, True) }}</td>
             <td>{{ row.description }}</td>
           </tr>{% endfor %}
         </tbody>
