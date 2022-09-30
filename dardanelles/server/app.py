@@ -32,7 +32,7 @@ def json_response(data):
 
 @dardanelles_app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", table=File.select())
 
 
 @dardanelles_app.route("/ping")
