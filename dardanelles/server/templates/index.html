@@ -31,6 +31,29 @@
         <p>To upload you need to register; see <a href="https://github.com/brightway-lca/dardanelles/blob/77cb1485833c8dc0af6274155cccd2ff3383e892/dardanelles/client/client.py#L24">the registration function code</a>.</p>
       </div>
     </div>
+    <div class="row">
+      <table class="u-full-width">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Uploader</th>
+            <th>Downloads</th>
+            <th>Hash</th>
+            <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for row in table %}
+          <tr>
+            <td>{{ row.database }}</td>
+            <td>{{ row.user.username }}</td>
+            <td>{{ row.count }}</td>
+            <td>{{ row.sha256 }}</td>
+            <td>{{ row.descripton }}</td>
+          </tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 </body>
 </html>

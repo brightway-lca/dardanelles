@@ -1,4 +1,5 @@
 bw2data
+bw2io
 bw_processing
 numpy
 wrapt
