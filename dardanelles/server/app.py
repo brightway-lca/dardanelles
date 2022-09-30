@@ -3,9 +3,10 @@ import json
 import uuid
 from pathlib import Path
 
-from flask import Response, abort, request, send_file, url_for
+from flask import Response, abort, request, send_file, url_for, render_template
 from peewee import DoesNotExist
 from werkzeug.utils import secure_filename
+
 
 from ..version import version
 from . import dardanelles_app
@@ -31,7 +32,7 @@ def json_response(data):
 
 @dardanelles_app.route("/")
 def index():
-    return """dardanelles web service, version {}.""".format(version)
+    return render_template("index.html")
 
 
 @dardanelles_app.route("/ping")
