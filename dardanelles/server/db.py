@@ -2,7 +2,14 @@ import datetime
 import json
 import os
 
-from peewee import DateTimeField, IntegerField, Model, SqliteDatabase, TextField, ForeignKeyField
+from peewee import (
+    DateTimeField,
+    ForeignKeyField,
+    IntegerField,
+    Model,
+    SqliteDatabase,
+    TextField,
+)
 
 from .filesystem import data_dir
 

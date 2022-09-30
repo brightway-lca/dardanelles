@@ -2,8 +2,9 @@ __all__ = ["dardanelles_app"]
 
 __version__ = (0, 1)
 
-from flask import Flask
 from pathlib import Path
+
+from flask import Flask
 
 template_dir = Path(__file__).parent.resolve() / "templates"
 dardanelles_app = Flask("dardanelles", template_folder=template_dir)

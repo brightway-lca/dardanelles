@@ -3,14 +3,13 @@ import json
 import uuid
 from pathlib import Path
 
-from flask import Response, abort, request, send_file, url_for, render_template
+from flask import Response, abort, render_template, request, send_file, url_for
 from peewee import DoesNotExist
 from werkzeug.utils import secure_filename
 
-
+from ..datapackage import Datapackage
 from ..version import version
 from . import dardanelles_app
-from ..datapackage import Datapackage
 from .db import File, User
 from .filesystem import data_dir
 
@@ -42,13 +41,17 @@ def ping():
 
 @dardanelles_app.route("/register", methods=["POST"])
 def register():
-    if not request.form["email_hash"] or not request.form['username']:
+    if not request.form["email_hash"] or not request.form["username"]:
         abort(400, "Missing required field")
 
     email_hash = request.form["email_hash"]
-    name = request.form['username']
+    name = request.form["username"]
 
-    if User.select().where((User.email_hash != email_hash) & (User.name == name)).exists():
+    if (
+        User.select()
+        .where((User.email_hash != email_hash) & (User.name == name))
+        .exists()
+    ):
         abort(406, "Username already registered")
 
     try:
