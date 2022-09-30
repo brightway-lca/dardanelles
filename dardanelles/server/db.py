@@ -2,7 +2,7 @@ import datetime
 import json
 import os
 
-from peewee import DateTimeField, IntegerField, Model, SqliteDatabase, TextField
+from peewee import DateTimeField, IntegerField, Model, SqliteDatabase, TextField, ForeignKeyField
 
 from .filesystem import data_dir
 
@@ -28,6 +28,9 @@ class JSONField(TextField):
 class User(Model):
     api_key = TextField(unique=True)
     email_hash = TextField(unique=True)
+
+    class Meta:
+        database = sql_database
 
 
 class File(Model):
