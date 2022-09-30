@@ -9,6 +9,12 @@ import bcrypt
 from .errors import AlreadyExists, RemoteError
 from .export_df import to_dardanelles_datapackage
 from .utils import sha256
+from ..datapackage import Datapackage
+
+try:
+    from bw2io.download_utils import download_with_progressbar
+except ImportError:
+    from .utils import download_with_progressbar
 
 
 DEFAULT_SALT = b'$2b$12$1FBcxtAiJUHWbTxY/47O1u'
@@ -84,3 +90,8 @@ class DardanellesClient:
             return resp.json()
         else:
             raise RemoteError("{}: {}".format(resp.status_code, resp.text))
+
+    def importer_from_hash(self, file_hash: str):
+        with tempfile.TemporaryDirectory() as td:
+            fp = download_with_progressbar(url=self.url + "/download/" + file_hash, dirpath=td)
+            dp = Datapackage(fp)
