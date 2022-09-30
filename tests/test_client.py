@@ -22,3 +22,6 @@ def test_client():
     ]
     assert d.catalog() == expected_catalog
 
+    # importer
+    d.importer_from_hash(expected_catalog[0][2])
+    pass
