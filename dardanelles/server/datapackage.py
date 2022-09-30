@@ -9,10 +9,11 @@ class Datapackage:
     def __init__(self, filepath: Union[str, Path]):
         fp = Path(filepath)
         assert fp.exists()
-        self.fs = generic_zipfile_filesystem(dirpath=fs.parent, filename=fs.name, write=False)
+        self.fs = generic_zipfile_filesystem(dirpath=fp.parent, filename=fp.name, write=False)
         self.metadata = file_reader(
             fs=self.fs, resource="datapackage.json", mimetype="application/json"
         )
+        self.resources = self.metadata['resources']
         self.data = []
         for resource in self.resources:
             try:

@@ -36,6 +36,7 @@ class DardanellesClient:
         self,
         database: str,
         author: str,
+        description: str,
         add_uncertainty: bool = True,
         version: Optional[str] = None,
         id_: Optional[str] = None,
@@ -45,6 +46,7 @@ class DardanellesClient:
             filepath = to_dardanelles_datapackage(
                 database=database,
                 author=author,
+                description=description,
                 add_uncertainty=add_uncertainty,
                 directory=td,
                 version=version,

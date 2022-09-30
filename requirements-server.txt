@@ -2,3 +2,4 @@ appdirs
 flask
 jinja2
 peewee
+bw_processing

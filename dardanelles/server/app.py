@@ -95,6 +95,7 @@ def upload():
         dp = Datapackage(filepath)
         assert len(dp.nodes)
     except:
+        filepath.unlink()
         abort(406, "Can't load datapackage")
 
     File(
