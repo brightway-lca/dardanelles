@@ -1,6 +1,6 @@
 import datetime
-import os
 import json
+import os
 
 from peewee import DateTimeField, IntegerField, Model, SqliteDatabase, TextField
 

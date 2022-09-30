@@ -9,9 +9,9 @@ from werkzeug.utils import secure_filename
 
 from ..version import version
 from . import dardanelles_app
+from .datapackage import Datapackage
 from .db import File
 from .filesystem import data_dir
-from .datapackage import Datapackage
 
 
 def sha256(filepath, blocksize=65536):
